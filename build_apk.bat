@@ -16,13 +16,13 @@ cd /d "%~dp0android"
 call gradlew.bat assembleDebug
 if errorlevel 1 goto :error
 
-if not exist "app\outputs" mkdir "app\outputs"
-copy /Y "app\build\outputs\apk\debug\app-debug.apk" "app\outputs\app-debug.apk"
+if not exist "app\outputs\apk" mkdir "app\outputs\apk"
+copy /Y "app\build\outputs\apk\debug\app-debug.apk" "app\outputs\apk\app-debug.apk"
 if errorlevel 1 goto :error
 
 echo.
 echo APK generated successfully.
-echo Output path: android\app\outputs\app-debug.apk
+echo Output path: android\app\outputs\apk\app-debug.apk
 exit /b 0
 
 :error
