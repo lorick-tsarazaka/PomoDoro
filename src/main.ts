@@ -28,11 +28,18 @@ import '@ionic/vue/css/display.css';
  */
 
 /* @import '@ionic/vue/css/palettes/dark.always.css'; */
-/* @import '@ionic/vue/css/palettes/dark.class.css'; */
-import '@ionic/vue/css/palettes/dark.system.css';
+
+import './theme/light.css';
+import './theme/dark.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import './theme/main.css';
+import { initializeTheme } from '@/utils/theme';
+import { initializeLanguage } from '@/utils/i18n';
+
+initializeTheme();
+initializeLanguage();
 
 const app = createApp(App)
   .use(IonicVue)
