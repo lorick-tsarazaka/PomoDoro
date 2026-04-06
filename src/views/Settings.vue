@@ -58,7 +58,7 @@
         <ion-item class="theme-settings-item" lines="none">
           <div class="theme-settings-content">
             <div class="theme-setting-row">
-              <ion-label slot="start" class="theme-setting-label">{{ t('settings.languageLabel') }}</ion-label>
+              <ion-label slot="start" class="theme-setting-label">{{ t('settings.language') }}</ion-label>
               <ion-select
                   slot="end"
                   interface="popover"
@@ -155,7 +155,10 @@ const onLanguageChange = (event: CustomEvent) => {
   --border-width: 0;
   --inner-border-width: 0;
   border: none;
-  box-shadow: none;
+}
+
+.theme-settings-item::part(native) {
+  border: 1px solid rgba(88, 88, 88, 0.09);
 }
 
 .theme-settings-content {

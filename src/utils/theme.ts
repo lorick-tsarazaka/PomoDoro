@@ -19,8 +19,18 @@ const applyNativeStatusBarStyle = async (mode: ThemeMode): Promise<void> => {
     return;
   }
 
+  const backgroundColor = mode === 'dark' ? '#0e1426' : '#ffffff';
+
+  await StatusBar.setOverlaysWebView({
+    overlay: false,
+  });
+
+  await StatusBar.setBackgroundColor({
+    color: backgroundColor,
+  });
+
   await StatusBar.setStyle({
-    style: mode === 'dark' ? Style.Light : Style.Dark,
+    style: mode === 'dark' ? Style.Dark : Style.Light,
   });
 };
 
