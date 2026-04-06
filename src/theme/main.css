@@ -199,18 +199,21 @@ html.ion-palette-dark .project-menu-popover ion-item ion-icon {
 .project-menu-popover ion-item {
 	--min-height: 42px;
 	--background: #ffffff;
+	--border-radius: 0;
 	--inner-border-width: 0;
 	--border-width: 0;
 	--padding-start: 10px;
 	--padding-end: 10px;
 	border: 0;
 	box-shadow: none;
+	border-radius: 0;
 }
 
 .project-menu-popover ion-item::part(native) {
 	background: #ffffff;
 	border: 0;
 	box-shadow: none;
+	border-radius: 0;
 	margin-bottom: 0;
 }
 
@@ -318,4 +321,44 @@ html.ion-palette-dark .project-list ion-item.project-empty-item {
 
 .main-side-menu ion-item + ion-item {
 	border-top: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+html.ion-palette-dark .main-side-menu {
+	--background: var(--ion-background-color);
+}
+
+html.ion-palette-dark .main-side-menu::part(container) {
+	background: var(--ion-background-color);
+}
+
+html.ion-palette-dark .main-side-menu ion-header,
+html.ion-palette-dark .main-side-menu ion-toolbar {
+	--background: var(--ion-background-color);
+	background: var(--ion-background-color);
+	--color: var(--ion-text-color);
+}
+
+html.ion-palette-dark .main-side-menu ion-content,
+html.ion-palette-dark .main-side-menu ion-list {
+	--background: var(--ion-background-color);
+	background: var(--ion-background-color);
+}
+
+html.ion-palette-dark .main-side-menu ion-content::part(background) {
+	background: var(--ion-background-color);
+}
+
+html.ion-palette-dark .main-side-menu ion-item {
+	--color: var(--ion-text-color);
+	--background: transparent;
+	border-radius: 0;
+}
+
+html.ion-palette-dark .main-side-menu ion-item::part(native) {
+	background: transparent;
+	border-radius: 0;
+}
+
+html.ion-palette-dark .main-side-menu ion-item + ion-item {
+	border-top: 1px solid rgba(148, 163, 184, 0.24);
 }
