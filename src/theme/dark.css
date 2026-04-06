@@ -54,12 +54,18 @@
 
 html.ion-palette-dark,
 html.ion-palette-dark body,
-html.ion-palette-dark ion-app {
+html.ion-palette-dark ion-app,
+html.ion-palette-dark ion-router-outlet,
+html.ion-palette-dark ion-page {
   background:
     radial-gradient(circle at top left, rgba(124, 156, 255, 0.14), transparent 28%),
     radial-gradient(circle at top right, rgba(54, 194, 160, 0.1), transparent 24%),
     var(--ion-background-color);
   color: var(--ion-text-color);
+}
+
+html.ion-palette-dark ion-page {
+  background-color: var(--ion-background-color);
 }
 
 .ion-palette-dark ion-content::part(background) {

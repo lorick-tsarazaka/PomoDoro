@@ -3,6 +3,11 @@ http://ionicframework.com/docs/theming/ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
+html {
+	--ion-safe-area-top: env(safe-area-inset-top);
+	--ion-safe-area-bottom: env(safe-area-inset-bottom);
+}
+
 ion-popover.theme-mode-popover,
 ion-popover.theme-font-popover {
 	--width: fit-content;
