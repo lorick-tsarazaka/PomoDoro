@@ -1,0 +1,8 @@
+- renomme les fichier enleve Page :
+    - HomePage.vue -> Home
+    - SettingsPage.vue -> Settings.vue 
+    - ..
+- je veux veux plus de css et ts dans le vue donc chaque fichier vue devrait avoir leur propre fichier css et ts :
+    - ex :
+        - home.css , home.ts
+        - settings.css , settings.ts
