@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@400;600;700&family=Roboto:wght@400;500;700&family=Poppins:wght@400;600;700&family=Lato:wght@400;700&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
+:root {
+	--ion-color-primary: #3a86ff;
+	--ion-color-primary-rgb: 58, 134, 255;
+	--ion-color-primary-contrast: #ffffff;
+	--ion-color-primary-shade: #3476e0;
+	--ion-color-primary-tint: #5092ff;
+
+	--ion-background-color: #f9f9f9;
+	--ion-text-color: #1f2937;
+
+	--app-bg: #f9f9f9;
+	--app-surface: #ffffff;
+	--app-bg-hover: #f1f5f9;
+	--app-accent: #3a86ff;
+	--app-text-primary: #1f2937;
+	--app-text-secondary: #6b7280;
+	--app-danger: #ff4d4f;
+	--app-success: #22c55e;
+	--app-border: #e5eaf273;
+	--app-header-shadow: 0 3px 10px rgba(17, 24, 39, 0.04);
+	--app-shadow-soft: 1px 3px 10px rgba(15, 23, 42, 0.05);
+	--app-font-family: 'Nunito', sans-serif;
+}
+
+html,
+body,
+#app,
+ion-app {
+	width: 100%;
+	min-height: 100%;
+	background: radial-gradient(circle at 10% 0%, #ffffff 0%, #f5f7fa 45%, #eaf0f9 100%);
+}
+
+* {
+	box-sizing: border-box;
+	font-family: var(--app-font-family);
+}
+
+.header-md {
+	box-shadow: 0 3px 10px rgba(17, 24, 39, 0.04) !important;
+}
+
+.header-md::after {
+	display: none !important;
+}

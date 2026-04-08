@@ -253,3 +253,7 @@ ClientBin/
 *.dbproj.schemaview
 *.jfm
 *.pfx
+
+# Node.js dependencies
+node_modules/
+**/node_modules/
