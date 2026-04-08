@@ -120,7 +120,7 @@
             </label>
             <label>
               <span>{{ t('description') }}</span>
-              <ion-textarea v-model="form.description" fill="outline" auto-grow required />
+              <ion-textarea v-model="form.description" fill="outline" auto-grow />
             </label>
             <div class="duration-grid">
               <label>

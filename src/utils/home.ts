@@ -127,7 +127,7 @@ export default defineComponent({
     async function saveProject(): Promise<void> {
       const duration = normalizeDuration();
 
-      if (!form.title.trim() || !form.description.trim()) {
+      if (!form.title.trim()) {
         await showToast(t('requiredFields'), alertCircleOutline);
         return;
       }
