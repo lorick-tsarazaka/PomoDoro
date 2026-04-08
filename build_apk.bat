@@ -41,7 +41,7 @@ popd
 
 if not "%APK_EXIT%"=="0" exit /b %APK_EXIT%
 
-set "APK_BUILD_DIR=%ROOT%android\app\build\outputs\apk"
+set "APK_BUILD_DIR=%ROOT%android\app\build\outputs\apk\debug"
 set "APK_OUTPUT_DIR=%ROOT%android\app\outputs\apk"
 
 if exist "%APK_BUILD_DIR%" (
