@@ -1,18 +1,11 @@
 # PomoDoro
 
 
-<table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td width="180" valign="top">
-      <img src="public/app-icon.png" alt="PomoDoro app icon" width="160">
-    </td>
-    <td valign="top">
-      <p>
-        PomoDoro is a productivity-focused web and Android project manager built with Ionic and Vue 3. It helps you organize tasks, track status, and manage durations in a clean interface designed for fast everyday use. Instead of forcing a complex workflow, the app gives you a focused space to plan what matters, move quickly between Todo, Done, and Trash, and stay in control of your progress. Native Android persistence, multilingual support, and a mobile-first layout make it suitable for personal planning, study routines, and lightweight project follow-up.
-      </p>
-    </td>
-  </tr>
-</table>
+<img src="public/app-icon.png" alt="PomoDoro app icon" width="160" align="left" style="margin: 0 18px 12px 0;">
+
+PomoDoro is a productivity-focused web and Android project manager built with Ionic and Vue 3. It helps you organize tasks, track status, and manage durations in a clean interface designed for fast everyday use. Instead of forcing a complex workflow, the app gives you a focused space to plan what matters, move quickly between Todo, Done, and Trash, and stay in control of your progress. Native Android persistence, multilingual support, and a mobile-first layout make it suitable for personal planning, study routines, and lightweight project follow-up.
+
+<br clear="left">
 
 ## Overview
 
