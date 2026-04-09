@@ -93,6 +93,11 @@
   outline: 2px solid var(--app-accent);
 }
 
+.project-card.dimmed {
+  opacity: 0.42;
+  pointer-events: none;
+}
+
 .selection-dot {
   width: 28px;
   height: 28px;
@@ -170,6 +175,10 @@
 
 .action-btn:active {
   transform: scale(0.95);
+}
+
+.action-btn:disabled {
+  opacity: 0.3;
 }
 
 .main-fab-wrap {
@@ -286,7 +295,7 @@
 }
 
 .input-fill-outline.sc-ion-input-md-h , .textarea-fill-outline.sc-ion-textarea-md-h{
-    --border-color: rgba(100, 118, 150, 0.142) !important;
+    --border-color: rgba(89, 104, 132, 0.200) !important;
 }
 .form-layout label span {
   color: var(--app-text-primary);

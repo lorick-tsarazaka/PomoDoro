@@ -1,8 +1,9 @@
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import { chevronBackOutline } from 'ionicons/icons';
+import { chevronBackOutline, chevronForwardOutline } from 'ionicons/icons';
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { appSettings, setFont, setLanguage, type FontChoice, type Language } from '../services/service';
+import { getSelectedRingtoneName, loadRingtoneLibrary } from '../services/ringtone';
 import { languageOptions, useI18n } from './i18n';
 
 export default defineComponent({
@@ -10,6 +11,8 @@ export default defineComponent({
   setup() {
     const { t } = useI18n();
     const router = useRouter();
+
+    loadRingtoneLibrary();
 
     async function goBack(): Promise<void> {
       if (window.history.length > 1) {
@@ -30,14 +33,21 @@ export default defineComponent({
       await setLanguage(target.value as Language);
     }
 
+    async function goToRingtone(): Promise<void> {
+      await router.push('/settings/ringtone');
+    }
+
     return {
       t,
       goBack,
       onFontChange,
       onLanguageChange,
+      goToRingtone,
+      selectedRingtoneName: getSelectedRingtoneName,
       appSettings,
       languageOptions,
       chevronBackOutline,
+      chevronForwardOutline,
     };
   },
 });

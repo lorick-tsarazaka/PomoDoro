@@ -13,42 +13,19 @@
 
     <ion-content :fullscreen="true" class="page-content">
       <div class="page-shell">
-
-        <section class="help-card">
-          <h3>{{ t('helpIconsTitle') }}</h3>
-          <div class="icon-guide">
-            <div class="icon-row">
-              <span class="icon-chip"><ion-icon :icon="menuOutline" /></span>
-              <p><strong>{{ t('helpIconMenuTitle') }}</strong> : {{ t('helpIconMenuDesc') }}</p>
+        <section class="help-hero">
+          <div class="hero-top">
+            <span class="hero-icon"><ion-icon :icon="helpCircleOutline" /></span>
+            <div>
+              <h2>{{ t('help') }}</h2>
+              <p>{{ t('appDescription') }}</p>
             </div>
-            <div class="icon-row">
-              <span class="icon-chip"><ion-icon :icon="add" /></span>
-              <p><strong>{{ t('helpIconCreateTitle') }}</strong> : {{ t('helpIconCreateDesc') }}</p>
-            </div>
-            <div class="icon-row">
-              <span class="icon-chip"><ion-icon :icon="settingsOutline" /></span>
-              <p><strong>{{ t('helpIconSettingsTitle') }}</strong> : {{ t('helpIconSettingsDesc') }}</p>
-            </div>
-            <div class="icon-row">
-              <span class="icon-chip"><ion-icon :icon="clipboardOutline" /></span>
-              <p><strong>{{ t('helpIconTodoTitle') }}</strong> : {{ t('helpIconTodoDesc') }}</p>
-            </div>
-            <div class="icon-row">
-              <span class="icon-chip"><ion-icon :icon="checkmarkDoneOutline" /></span>
-              <p><strong>{{ t('helpIconDoneTitle') }}</strong> : {{ t('helpIconDoneDesc') }}</p>
-            </div>
-            <div class="icon-row">
-              <span class="icon-chip"><ion-icon :icon="ellipsisVertical" /></span>
-              <p><strong>{{ t('helpIconOptionsTitle') }}</strong> : {{ t('helpIconOptionsDesc') }}</p>
-            </div>
-            <div class="icon-row">
-              <span class="icon-chip"><ion-icon :icon="trashOutline" /></span>
-              <p><strong>{{ t('helpIconTrashTitle') }}</strong> : {{ t('helpIconTrashDesc') }}</p>
-            </div>
-            <div class="icon-row">
-              <span class="icon-chip"><ion-icon :icon="informationCircleOutline" /></span>
-              <p><strong>{{ t('helpIconAboutTitle') }}</strong> : {{ t('helpIconAboutDesc') }}</p>
-            </div>
+          </div>
+          <div class="hero-tags">
+            <span>{{ t('helpTagProjects') }}</span>
+            <span>{{ t('helpTagTasks') }}</span>
+            <span>{{ t('helpTagTimer') }}</span>
+            <span>{{ t('helpTagSelection') }}</span>
           </div>
         </section>
 
@@ -64,17 +41,72 @@
 
         <section class="help-card">
           <h3>{{ t('helpMainActionsTitle') }}</h3>
-          <div class="faq-item">
-            <strong>{{ t('helpActionCreateTitle') }}</strong>
-            <p>{{ t('helpActionCreateDesc') }}</p>
+          <ul class="help-list">
+            <li>{{ t('helpActionCreateDesc') }}</li>
+            <li>{{ t('helpActionDoneDesc') }}</li>
+            <li>{{ t('helpActionRestoreDesc') }}</li>
+          </ul>
+        </section>
+
+        <section class="help-card">
+          <h3>{{ t('helpProjectPageTitle') }}</h3>
+          <div class="icon-guide">
+            <div class="icon-row">
+              <span class="icon-chip"><ion-icon :icon="clipboardOutline" /></span>
+              <p>{{ t('helpProjectPage1') }}</p>
+            </div>
+            <div class="icon-row">
+              <span class="icon-chip"><ion-icon :icon="ellipsisVertical" /></span>
+              <p>{{ t('helpProjectPage2') }}</p>
+            </div>
+            <div class="icon-row">
+              <span class="icon-chip"><ion-icon :icon="reorderThreeOutline" /></span>
+              <p>{{ t('helpProjectPage3') }}</p>
+            </div>
+            <div class="icon-row">
+              <span class="icon-chip"><ion-icon :icon="add" /></span>
+              <p>{{ t('helpProjectPage4') }}</p>
+            </div>
           </div>
-          <div class="faq-item">
-            <strong>{{ t('helpActionDoneTitle') }}</strong>
-            <p>{{ t('helpActionDoneDesc') }}</p>
+        </section>
+
+        <section class="help-card">
+          <h3>{{ t('helpTimerTitle') }}</h3>
+          <div class="icon-guide">
+            <div class="icon-row">
+              <span class="icon-chip"><ion-icon :icon="playOutline" /></span>
+              <p>{{ t('helpTimer1') }}</p>
+            </div>
+            <div class="icon-row">
+              <span class="icon-chip"><ion-icon :icon="pauseOutline" /></span>
+              <p>{{ t('helpTimer2') }}</p>
+            </div>
+            <div class="icon-row">
+              <span class="icon-chip"><ion-icon :icon="checkmarkDoneOutline" /></span>
+              <p>{{ t('helpTimer3') }}</p>
+            </div>
+            <div class="icon-row">
+              <span class="icon-chip"><ion-icon :icon="trashOutline" /></span>
+              <p>{{ t('helpTimer4') }}</p>
+            </div>
           </div>
-          <div class="faq-item">
-            <strong>{{ t('helpActionRestoreTitle') }}</strong>
-            <p>{{ t('helpActionRestoreDesc') }}</p>
+        </section>
+
+        <section class="help-card">
+          <h3>{{ t('helpIconsTitle') }}</h3>
+          <div class="icon-guide">
+            <div class="icon-row">
+              <span class="icon-chip"><ion-icon :icon="menuOutline" /></span>
+              <p><strong>{{ t('helpIconMenuTitle') }}</strong> : {{ t('helpIconMenuDesc') }}</p>
+            </div>
+            <div class="icon-row">
+              <span class="icon-chip"><ion-icon :icon="settingsOutline" /></span>
+              <p><strong>{{ t('helpIconSettingsTitle') }}</strong> : {{ t('helpIconSettingsDesc') }}</p>
+            </div>
+            <div class="icon-row">
+              <span class="icon-chip"><ion-icon :icon="informationCircleOutline" /></span>
+              <p><strong>{{ t('helpIconAboutTitle') }}</strong> : {{ t('helpIconAboutDesc') }}</p>
+            </div>
           </div>
         </section>
       </div>

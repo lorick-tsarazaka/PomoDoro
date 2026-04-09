@@ -25,7 +25,7 @@
             v-for="project in filteredProjects"
             :key="project.id"
             class="project-card"
-            :class="{ selected: isSelected(project.id) }"
+            :class="{ selected: isSelected(project.id), dimmed: isProjectDimmed(project.id) }"
             @mousedown="startLongPress(project.id)"
             @mouseup="cancelLongPress"
             @mouseleave="cancelLongPress"
@@ -38,6 +38,11 @@
                     <h3>{{ project.title }}</h3>
                     <p>{{ project.description }}</p>
                   <span>{{ t('duration') }} : {{ formatProjectDuration(project) }}</span>
+                  <span>Temps passe : {{ formatElapsedSeconds(project.elapsedSeconds) }}</span>
+                  <span>
+                    Progression : {{ getProjectProgress(project).done }}/{{ getProjectProgress(project).total }}
+                    ({{ getProjectProgress(project).percent }}%)
+                  </span>
                 </div>
                 <button
                   class="selection-dot"
@@ -54,9 +59,10 @@
                 v-if="activeMode === 'todo'"
                 class="action-btn"
                 type="button"
-                @click="confirmMarkDone(project.id)"
+                :disabled="!canStartProject(project.id)"
+                @click="togglePlayPause(project.id)"
               >
-                <ion-icon :icon="checkmarkDoneOutline" />
+                <ion-icon :icon="isProjectRunning(project.id) ? pauseOutline : playOutline" />
               </button>
               <button class="action-btn" type="button" @click="openProjectActions(project)">
                 <ion-icon :icon="ellipsisVertical" />
@@ -122,20 +128,6 @@
               <span>{{ t('description') }}</span>
               <ion-textarea v-model="form.description" fill="outline" auto-grow />
             </label>
-            <div class="duration-grid">
-              <label>
-                <span>{{ t('hours') }}</span>
-                <ion-input v-model.number="form.durationHours" type="number" min="0" fill="outline" required />
-              </label>
-              <label>
-                <span>{{ t('minutes') }}</span>
-                <ion-input v-model.number="form.durationMinutes" type="number" min="0" max="59" fill="outline" required />
-              </label>
-              <label>
-                <span>{{ t('seconds') }}</span>
-                <ion-input v-model.number="form.durationSeconds" type="number" min="0" max="59" fill="outline" required />
-              </label>
-            </div>
             <div class="form-actions">
               <ion-button fill="clear" @click="closeModal">{{ t('cancel') }}</ion-button>
               <ion-button type="submit">{{ t('save') }}</ion-button>

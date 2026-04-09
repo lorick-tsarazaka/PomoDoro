@@ -1,0 +1,216 @@
+.page-header {
+  --background: var(--app-surface);
+  --color: var(--app-text-primary);
+  --border-color: var(--app-border);
+  box-shadow: var(--app-header-shadow);
+  border-bottom: 1px solid var(--app-border);
+}
+
+.page-header ion-toolbar {
+  --background: var(--app-surface);
+  --color: var(--app-text-primary);
+  --border-color: var(--app-border);
+  --min-height: 65px;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  min-height: 65px;
+  display: flex;
+  align-items: center;
+}
+
+.page-header::after {
+  display: none;
+}
+
+.page-header ion-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.page-back-btn {
+  --color: var(--app-accent) !important;
+  --color-activated: var(--app-accent);
+  --color-focused: var(--app-accent);
+  --color-hover: var(--app-accent);
+  color: var(--app-accent);
+  width: 46px;
+  height: 46px;
+  margin: 0;
+}
+
+.page-back-btn ion-icon {
+  font-size: 26px;
+  color: var(--app-accent);
+}
+
+.delete-select-btn {
+  --color: var(--app-danger);
+  color: var(--app-danger);
+  font-weight: 700;
+}
+
+.delete-select-btn span {
+  margin-left: 6px;
+}
+
+.page-content {
+  --background: var(--app-bg);
+}
+
+.page-shell {
+  padding: 16px 14px 108px;
+  display: grid;
+  gap: 14px;
+}
+
+.sound-group {
+  display: grid;
+  gap: 10px;
+}
+
+.list-wrap {
+  border-radius: 10px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-soft);
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.group-head {
+  padding: 8px 4px 2px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.group-head h2 {
+  margin: 0 0 4px;
+  color: var(--app-text-primary);
+  font-size: 18px;
+}
+
+.group-head p {
+  margin: 0;
+  color: var(--app-text-secondary);
+  font-size: 13px;
+}
+
+.sound-card,
+.sound-add-card {
+  border: 1px solid var(--app-border);
+  border-radius: 0;
+  background: var(--app-surface);
+  box-shadow: none;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sound-card {
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.sound-card:active {
+  box-shadow: none;
+}
+
+.sound-card.playing {
+  border-color: var(--app-accent);
+  box-shadow: none;
+  background: rgba(58, 134, 255, 0.06);
+}
+
+.sound-card.selected {
+  border-color: var(--app-border);
+}
+
+.sound-info {
+  min-width: 0;
+  flex: 1;
+  display: grid;
+  gap: 4px;
+}
+
+.sound-info strong {
+  color: var(--app-text-primary);
+  font-size: 17px;
+}
+
+.sound-info span {
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sound-stop-btn,
+.sound-check-btn,
+.sound-select-btn {
+  border: none;
+  border-radius: 8px;
+  min-width: 36px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.sound-stop-btn {
+  background: transparent;
+  color: var(--app-danger);
+}
+
+.sound-check-btn {
+  background: transparent;
+  color: var(--app-accent);
+}
+
+.sound-inline-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sound-selected-icon {
+  font-size: 22px;
+  color: var(--app-accent);
+}
+
+.sound-stop-btn ion-icon,
+.sound-check-btn ion-icon,
+.sound-select-btn ion-icon,
+.sound-add-card ion-icon {
+  font-size: 20px;
+}
+
+.sound-select-btn {
+  background: transparent;
+  color: var(--app-accent);
+}
+
+.sound-add-card {
+  width: 100%;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid var(--app-accent);
+  color: var(--app-accent);
+  min-height: 58px;
+  font-weight: 700;
+  box-shadow: none;
+}
+
+.sound-add-card span {
+  font-size: 15px;
+}
+
+.sound-file-input {
+  display: none;
+}

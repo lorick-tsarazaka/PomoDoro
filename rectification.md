@@ -1,0 +1,32 @@
+- page fait :
+    - l'action a refaire ne marche pas
+    - si on refait un projet temps passer et progression sont a 0
+    - si on va dans page projet d'un projet fait btn + et play/pause disparait de meme dans corbeille
+- page projet:
+    - div card tache:
+        - enleve border radius et border 
+        - mets btn selection a droit et :
+            - si c'est pas en mode selection elle est display none
+            - si c'est en mode selection elle est en display et btn check & btn option sont none
+        - mode selection se fait comme celle de home c'est a dire maintenir le div mais il faut pas oublier que si c'est maintenu mais dans la zone deplacement ordre tache elle est en mode deplacement ordre
+        - si mode selection :
+            - enleve btn supprimer pres de  titre liste tache
+            - change plutot header en :
+                - gauche btn croix(annuler)
+                - droite text supprimer avec nbr selection + icon supprimer
+        - dans toast option ajoute icone pres de option modifier
+    - div liste tache :
+        - ajoute trait en bas de titre
+        - si pas de tache ajoute : (tous center en x)
+            - haut icon tache
+            - bas texte pas de tache
+    - div bas :
+        - background transparent
+        - btn + doit etre 100% comme celle de page home
+        - btn play pause:
+            - border radius assez intense
+            - je ne veux pas trop d'espace entre temps et icon play/pause
+            - animation se fais sur les border du div:
+                - au commencement border plein et vert
+                - puis border diminue petit a petit en change de couleur progressivement
+            - background couleur du temps mais legere
