@@ -75,7 +75,7 @@
         </section>
 
         <footer class="about-footer">
-          <p>Â© {{ currentYear }} PomoDoro. {{ t('aboutCopyright') }}</p>
+          <p>© {{ currentYear }} PomoDoro.</p>
         </footer>
 
       </div>

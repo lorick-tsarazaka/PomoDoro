@@ -11,6 +11,7 @@ type TranslationKey =
   | 'help'
   | 'language'
   | 'font'
+  | 'ringtone'
   | 'addProject'
   | 'editProject'
   | 'title'
@@ -51,6 +52,27 @@ type TranslationKey =
   | 'appDescription'
   | 'menu'
   | 'projectDetails'
+  | 'projectProgressLabel'
+  | 'projectTaskListTitle'
+  | 'projectNoTask'
+  | 'projectNotFound'
+  | 'projectEditTask'
+  | 'projectAddTask'
+  | 'projectDeleteTaskConfirm'
+  | 'projectDeleteTasksConfirm'
+  | 'taskAddedSuccess'
+  | 'taskUpdatedSuccess'
+  | 'soundPageTitle'
+  | 'soundAppTitle'
+  | 'soundAppSubtitle'
+  | 'soundLocalTitle'
+  | 'soundLocalSubtitle'
+  | 'soundLocalChip'
+  | 'soundAdd'
+  | 'soundStop'
+  | 'soundDeleteSelection'
+  | 'soundOnlyAudio'
+  | 'soundAdded'
   | 'selectedItems'
   | 'aboutApkInfoTitle'
   | 'aboutPlatformLabel'
@@ -90,6 +112,20 @@ type TranslationKey =
   | 'helpActionDoneDesc'
   | 'helpActionRestoreTitle'
   | 'helpActionRestoreDesc'
+  | 'helpProjectPageTitle'
+  | 'helpProjectPage1'
+  | 'helpProjectPage2'
+  | 'helpProjectPage3'
+  | 'helpProjectPage4'
+  | 'helpTimerTitle'
+  | 'helpTimer1'
+  | 'helpTimer2'
+  | 'helpTimer3'
+  | 'helpTimer4'
+  | 'helpTagProjects'
+  | 'helpTagTasks'
+  | 'helpTagTimer'
+  | 'helpTagSelection'
   | 'aboutCreatorInfoTitle'
   | 'aboutCreatorLabel'
   | 'aboutCreatorValue'
@@ -112,6 +148,7 @@ const dictionary: Dictionary = {
     help: 'Aide',
     language: 'Langue',
     font: 'Police',
+    ringtone: 'Sonnerie',
     addProject: 'Ajouter un projet',
     editProject: 'Modifier le projet',
     title: 'Titre',
@@ -139,12 +176,12 @@ const dictionary: Dictionary = {
     deleteSelection: 'Supprimer sélection',
     doneSelection: 'Valider sélection',
     todoSelection: 'Refaire sélection',
-    restoreSelection: 'Restaurer selection',
+    restoreSelection: 'Restaurer sélection',
     createSuccess: 'Projet ajouté',
     updateSuccess: 'Projet modifié',
     deleteSuccess: 'Projet supprimé',
     restoreSuccess: 'Projet restauré',
-    doneSuccess: 'Projet marque comme fait',
+    doneSuccess: 'Projet marqué comme fait',
     todoSuccess: 'Projet remis en à faire',
     requiredFields: 'Tous les champs sont obligatoires',
     noProjects: 'Aucun projet pour le moment.',
@@ -152,6 +189,27 @@ const dictionary: Dictionary = {
     appDescription: 'Application de gestion de projet orientée productivité.',
     menu: 'Menu',
     projectDetails: 'Détail projet',
+    projectProgressLabel: 'Progression',
+    projectTaskListTitle: 'Liste des tâches',
+    projectNoTask: 'Pas de tâche',
+    projectNotFound: 'Projet introuvable.',
+    projectEditTask: 'Modifier la tâche',
+    projectAddTask: 'Ajouter une tâche',
+    projectDeleteTaskConfirm: 'Supprimer cette tâche ?',
+    projectDeleteTasksConfirm: 'Supprimer ces tâches ?',
+    taskAddedSuccess: 'Tâche ajoutée',
+    taskUpdatedSuccess: 'Tâche modifiée',
+    soundPageTitle: 'Sonnerie',
+    soundAppTitle: 'Sonnerie de l’application',
+    soundAppSubtitle: 'Sons fournis par l\'application',
+    soundLocalTitle: 'Sonnerie locale',
+    soundLocalSubtitle: 'Sons envoyés depuis ton appareil.',
+    soundLocalChip: 'Local',
+    soundAdd: 'Ajouter son',
+    soundStop: 'Stop',
+    soundDeleteSelection: 'Supprimer',
+    soundOnlyAudio: 'Seuls les fichiers audio sont acceptés.',
+    soundAdded: 'Son ajouté',
     selectedItems: 'éléments sélectionnés',
     aboutApkInfoTitle: 'Informations APK',
     aboutPlatformLabel: 'Plateforme',
@@ -191,6 +249,20 @@ const dictionary: Dictionary = {
     helpActionDoneDesc: 'Sur un projet À faire, utilise le bouton validation ou l\'action de sélection multiple.',
     helpActionRestoreTitle: 'Restaurer depuis la corbeille',
     helpActionRestoreDesc: 'Va dans Corbeille, ouvre les options du projet puis choisis Restaurer.',
+    helpProjectPageTitle: 'Page projet',
+    helpProjectPage1: 'Le titre, la description, la durée totale et la progression du projet sont affichés en haut.',
+    helpProjectPage2: 'Appui long sur une tâche pour activer la sélection multiple, puis touche les autres tâches pour les ajouter.',
+    helpProjectPage3: 'Le bouton de déplacement à gauche permet de réordonner les tâches par glisser-déposer.',
+    helpProjectPage4: 'Le bouton + ajoute une nouvelle tâche, et le bouton play/pause reprend le chrono du projet.',
+    helpTimerTitle: 'Chrono et état',
+    helpTimer1: 'Le chrono du projet a sa propre mémoire: une pause conserve l’état exact du projet.',
+    helpTimer2: 'L’animation du chrono suit la bordure du bouton et se lit de haut milieu vers la droite puis vers la gauche.',
+    helpTimer3: 'Quand un projet tourne, les autres projets à faire sont grisés pour éviter les conflits.',
+    helpTimer4: 'Quand un projet est en pause, tu peux lancer un autre projet à la place.',
+    helpTagProjects: 'Projets',
+    helpTagTasks: 'Tâches',
+    helpTagTimer: 'Chrono',
+    helpTagSelection: 'Sélection',
     aboutCreatorInfoTitle: 'Créé par',
     aboutCreatorLabel: 'Créateur',
     aboutCreatorValue: 'Lorick',
@@ -211,6 +283,7 @@ const dictionary: Dictionary = {
     help: 'Help',
     language: 'Language',
     font: 'Font',
+    ringtone: 'Ringtone',
     addProject: 'Add project',
     editProject: 'Edit project',
     title: 'Title',
@@ -251,6 +324,27 @@ const dictionary: Dictionary = {
     appDescription: 'Project management app focused on productivity.',
     menu: 'Menu',
     projectDetails: 'Project details',
+    projectProgressLabel: 'Progress',
+    projectTaskListTitle: 'Task list',
+    projectNoTask: 'No task',
+    projectNotFound: 'Project not found.',
+    projectEditTask: 'Edit task',
+    projectAddTask: 'Add task',
+    projectDeleteTaskConfirm: 'Delete this task?',
+    projectDeleteTasksConfirm: 'Delete these tasks?',
+    taskAddedSuccess: 'Task added',
+    taskUpdatedSuccess: 'Task updated',
+    soundPageTitle: 'Ringtone',
+    soundAppTitle: 'App ringtones',
+    soundAppSubtitle: 'Sounds provided by the application',
+    soundLocalTitle: 'Local ringtones',
+    soundLocalSubtitle: 'Sounds uploaded from your device.',
+    soundLocalChip: 'Local',
+    soundAdd: 'Add sound',
+    soundStop: 'Stop',
+    soundDeleteSelection: 'Delete',
+    soundOnlyAudio: 'Only audio files are accepted.',
+    soundAdded: 'Sound added',
     selectedItems: 'selected items',
     aboutApkInfoTitle: 'APK Information',
     aboutPlatformLabel: 'Platform',
@@ -290,6 +384,20 @@ const dictionary: Dictionary = {
     helpActionDoneDesc: 'On a Todo project, use the validation button or multiple selection action.',
     helpActionRestoreTitle: 'Restore from trash',
     helpActionRestoreDesc: 'Go to Trash, open project options then choose Restore.',
+    helpProjectPageTitle: 'Project page',
+    helpProjectPage1: 'The project title, description, total duration and progress are shown at the top.',
+    helpProjectPage2: 'Long press a task to enable multiple selection, then tap other tasks to add them.',
+    helpProjectPage3: 'The drag handle on the left lets you reorder tasks by drag and drop.',
+    helpProjectPage4: 'The + button adds a new task, and play/pause resumes the project timer.',
+    helpTimerTitle: 'Timer and state',
+    helpTimer1: 'Each project keeps its own timer state, so pausing preserves the exact progress.',
+    helpTimer2: 'The timer animation follows the button border, starting at the top center and sweeping right-to-left.',
+    helpTimer3: 'When a project is running, other todo projects are dimmed to prevent conflicts.',
+    helpTimer4: 'When a project is paused, you can start another project instead.',
+    helpTagProjects: 'Projects',
+    helpTagTasks: 'Tasks',
+    helpTagTimer: 'Timer',
+    helpTagSelection: 'Selection',
     aboutCreatorInfoTitle: 'Created by',
     aboutCreatorLabel: 'Creator',
     aboutCreatorValue: 'Lorick',
@@ -309,6 +417,7 @@ const dictionary: Dictionary = {
     help: 'Fanampiana',
     language: 'Fiteny',
     font: 'Soratra',
+    ringtone: 'Feon-kira',
     addProject: 'Hanampy tetikasa',
     editProject: 'Hanova tetikasa',
     title: 'Lohateny',
@@ -349,6 +458,27 @@ const dictionary: Dictionary = {
     appDescription: 'Rindranasa fitantanana tetikasa ho an ny vokatra.',
     menu: 'Menu',
     projectDetails: 'Antsipirian tetikasa',
+    projectProgressLabel: 'Fivoarana',
+    projectTaskListTitle: 'Lisitry ny asa',
+    projectNoTask: 'Tsy misy asa',
+    projectNotFound: 'Tetikasa tsy hita.',
+    projectEditTask: 'Hanova asa',
+    projectAddTask: 'Hanampy asa',
+    projectDeleteTaskConfirm: 'Fafana ity asa ity?',
+    projectDeleteTasksConfirm: 'Fafana ireto asa ireto?',
+    taskAddedSuccess: 'Asa nampiana',
+    taskUpdatedSuccess: 'Asa novaina',
+    soundPageTitle: 'Feon-kira',
+    soundAppTitle: 'Feon-kiran\'ny app',
+    soundAppSubtitle: 'Feo omen\'ny fampiharana',
+    soundLocalTitle: 'Feon-kira an-toerana',
+    soundLocalSubtitle: 'Feo nampidirina avy amin ny fitaovanao.',
+    soundLocalChip: 'An-toerana',
+    soundAdd: 'Manampy feo',
+    soundStop: 'Ajanona',
+    soundDeleteSelection: 'Fafao',
+    soundOnlyAudio: 'Feo ihany no azo raisina.',
+    soundAdded: 'Feo nampiana',
     selectedItems: 'zavatra voafantina',
     aboutApkInfoTitle: 'Mombamomba APK',
     aboutPlatformLabel: 'Sehatra',
@@ -388,6 +518,20 @@ const dictionary: Dictionary = {
     helpActionDoneDesc: 'Amin\'ny tetikasa Hatao dia ampiasao ny bokotra fanamarinana na ny safidy maromaro.',
     helpActionRestoreTitle: 'Avereno avy amin\'ny fako',
     helpActionRestoreDesc: 'Mankanesa any amin\'ny Fako, sokafy ny safidin\'ny tetikasa dia fidio Avereno.',
+    helpProjectPageTitle: 'Pejin\'ny tetikasa',
+    helpProjectPage1: 'Eo ambony no miseho ny lohateny, ny famaritana, ny faharetana ary ny fivoaran\'ny tetikasa.',
+    helpProjectPage2: 'Tsindrio ela ny asa iray mba hampavitrika safidy maro, dia tsindrio ireo asa hafa hanampiana azy ireo.',
+    helpProjectPage3: 'Ny tahony eo ankavia no ahafahana mandamina indray ny asa amin\'ny alalan\'ny drag and drop.',
+    helpProjectPage4: 'Ny bokotra + dia manampy asa vaovao, ary ny play/pause dia mamerina ny chrono an\'ny tetikasa.',
+    helpTimerTitle: 'Chrono sy toe-javatra',
+    helpTimer1: 'Mitahiry toe-javatra manokana ny chrono an\'ny tetikasa tsirairay, ka raha miato dia voatahiry ilay fandrosoana.',
+    helpTimer2: 'Manaraka ny sisiny ny animation, manomboka eo afovoany ambony ary mandeha miankavanana miankavia.',
+    helpTimer3: 'Rehefa mandeha ny tetikasa iray dia maizina ny tetikasa Hatao hafa hisorohana fifandirana.',
+    helpTimer4: 'Rehefa miato ny tetikasa iray dia afaka manomboka tetikasa hafa ianao.',
+    helpTagProjects: 'Tetikasa',
+    helpTagTasks: 'Asa',
+    helpTagTimer: 'Chrono',
+    helpTagSelection: 'Safidy',
     aboutCreatorInfoTitle: 'Noforonin\'i',
     aboutCreatorLabel: 'Mpamorona',
     aboutCreatorValue: 'Lorick',

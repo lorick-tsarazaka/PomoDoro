@@ -1,6 +1,6 @@
 <template>
   <ion-app>
-    <ion-menu content-id="main-content" type="overlay" :swipe-gesture="false" class="side-menu">
+    <ion-menu content-id="main-content" type="overlay" :swipe-gesture="true" class="side-menu">
       <ion-header class="menu-header">
         <ion-toolbar>
           <ion-title>{{ t('menu') }}</ion-title>
@@ -38,7 +38,7 @@
             :class="{ active: activeMode === 'todo' }"
             @click="changeMode('todo')"
           >
-            <ion-icon :icon="clipboardOutline" />
+            <ion-icon :icon="folderOpenOutline" />
           </button>
           <button
             class="mode-btn"
@@ -77,7 +77,7 @@ import {
 } from '@ionic/vue';
 import {
   checkmarkDoneOutline,
-  clipboardOutline,
+  folderOpenOutline,
   helpCircleOutline,
   informationCircleOutline,
   menuOutline,

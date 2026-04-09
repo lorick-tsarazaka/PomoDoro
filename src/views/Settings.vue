@@ -14,6 +14,14 @@
     <ion-content :fullscreen="true" class="page-content">
       <div class="page-shell">
         <section class="settings-card">
+          <button class="settings-item settings-link" type="button" @click="goToRingtone">
+            <span>{{ t('ringtone') }}</span>
+            <div class="settings-link-right">
+              <strong>{{ selectedRingtoneName() }}</strong>
+              <ion-icon :icon="chevronForwardOutline" />
+            </div>
+          </button>
+
           <div class="settings-item">
             <label for="font-select">{{ t('font') }}</label>
             <select id="font-select" :value="appSettings.font" @change="onFontChange">

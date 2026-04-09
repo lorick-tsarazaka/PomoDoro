@@ -6,6 +6,8 @@ import Trash from '../views/Trash.vue';
 import About from '../views/About.vue';
 import Project from '../views/Project.vue';
 import Help from '../views/Help.vue';
+import TaskDetail from '../views/TaskDetail.vue';
+import Ringtone from '../views/Ringtone.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,6 +23,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/settings',
     name: 'Settings',
     component: Settings
+  },
+  {
+    path: '/settings/ringtone',
+    name: 'Ringtone',
+    component: Ringtone
   },
   {
     path: '/trash',
@@ -41,6 +48,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/project/:id',
     name: 'Project',
     component: Project
+  },
+  {
+    path: '/project/:projectId/task/:taskId',
+    name: 'TaskDetail',
+    component: TaskDetail
   }
 ]
 

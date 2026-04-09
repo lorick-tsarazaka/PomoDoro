@@ -28,6 +28,8 @@ import {
   createOutline,
   ellipseOutline,
   ellipsisVertical,
+  pauseOutline,
+  playOutline,
   refreshOutline,
   trashOutline,
 } from 'ionicons/icons';
@@ -37,12 +39,17 @@ import {
   activeMode,
   addProject,
   bulkChangeStatus,
+  canStartProject,
+  formatElapsedSeconds,
   formatProjectDuration,
+  getProjectProgress,
+  isProjectRunning,
+  redoProject,
+  redoProjects,
   setSelectionHeaderActive,
-  markProjectDone,
-  markProjectTodo,
   moveProjectToTrash,
   projects,
+  toggleProjectPlayPause,
   type Project,
   updateProject,
 } from '../services/service';
@@ -61,9 +68,6 @@ export default defineComponent({
     const form = reactive({
       title: '',
       description: '',
-      durationHours: 0,
-      durationMinutes: 25,
-      durationSeconds: 0,
     });
 
     let longPressTimer: ReturnType<typeof setTimeout> | null = null;
@@ -81,9 +85,6 @@ export default defineComponent({
     function resetForm(): void {
       form.title = '';
       form.description = '';
-      form.durationHours = 0;
-      form.durationMinutes = 25;
-      form.durationSeconds = 0;
       editingProjectId.value = null;
     }
 
@@ -101,18 +102,6 @@ export default defineComponent({
       resetForm();
     }
 
-    function normalizeDuration(): { hours: number; minutes: number; seconds: number } {
-      const safeHours = Math.max(0, Number(form.durationHours || 0));
-      const safeMinutes = Math.min(59, Math.max(0, Number(form.durationMinutes || 0)));
-      const safeSeconds = Math.min(59, Math.max(0, Number(form.durationSeconds || 0)));
-
-      return {
-        hours: safeHours,
-        minutes: safeMinutes,
-        seconds: safeSeconds,
-      };
-    }
-
     async function showToast(message: string, icon: string): Promise<void> {
       const toast = await toastController.create({
         message,
@@ -125,14 +114,7 @@ export default defineComponent({
     }
 
     async function saveProject(): Promise<void> {
-      const duration = normalizeDuration();
-
       if (!form.title.trim()) {
-        await showToast(t('requiredFields'), alertCircleOutline);
-        return;
-      }
-
-      if (duration.hours === 0 && duration.minutes === 0 && duration.seconds === 0) {
         await showToast(t('requiredFields'), alertCircleOutline);
         return;
       }
@@ -141,9 +123,6 @@ export default defineComponent({
         await addProject({
           title: form.title,
           description: form.description,
-          durationHours: duration.hours,
-          durationMinutes: duration.minutes,
-          durationSeconds: duration.seconds,
         });
         closeModal();
         await showToast(t('createSuccess'), checkmarkCircle);
@@ -160,9 +139,6 @@ export default defineComponent({
               await updateProject(editingProjectId.value as string, {
                 title: form.title,
                 description: form.description,
-                durationHours: duration.hours,
-                durationMinutes: duration.minutes,
-                durationSeconds: duration.seconds,
               });
               closeModal();
               await showToast(t('updateSuccess'), checkmarkCircle);
@@ -227,11 +203,8 @@ export default defineComponent({
       await alert.present();
     }
 
-    async function confirmMarkDone(projectId: string): Promise<void> {
-      await withConfirmation(t('confirmDone'), async () => {
-        await markProjectDone(projectId);
-        await showToast(t('doneSuccess'), checkmarkOutline);
-      });
+    async function togglePlayPause(projectId: string): Promise<void> {
+      await toggleProjectPlayPause(projectId);
     }
 
     async function confirmDelete(projectId: string): Promise<void> {
@@ -244,7 +217,7 @@ export default defineComponent({
 
     async function confirmRedo(projectId: string): Promise<void> {
       await withConfirmation(t('confirmRedo'), async () => {
-        await markProjectTodo(projectId);
+        await redoProject(projectId);
         await showToast(t('todoSuccess'), checkmarkOutline);
       });
     }
@@ -259,9 +232,6 @@ export default defineComponent({
                 editingProjectId.value = project.id;
                 form.title = project.title;
                 form.description = project.description;
-                form.durationHours = project.durationHours;
-                form.durationMinutes = project.durationMinutes;
-                form.durationSeconds = project.durationSeconds;
                 isModalOpen.value = true;
               },
             },
@@ -316,7 +286,7 @@ export default defineComponent({
 
     async function confirmBulkTodo(): Promise<void> {
       await withConfirmation(t('confirmRedo'), async () => {
-        await bulkChangeStatus(Array.from(selectedIds.value), 'todo');
+        await redoProjects(Array.from(selectedIds.value));
         clearSelection();
         await showToast(t('todoSuccess'), checkmarkOutline);
       });
@@ -361,6 +331,8 @@ export default defineComponent({
       createOutline,
       ellipseOutline,
       ellipsisVertical,
+      pauseOutline,
+      playOutline,
       refreshOutline,
       trashOutline,
       filteredProjects,
@@ -378,12 +350,17 @@ export default defineComponent({
       cancelLongPress,
       toggleSelection,
       toggleSelectAll,
-      confirmMarkDone,
+      togglePlayPause,
       confirmBulkDone,
       confirmBulkTodo,
       confirmBulkDelete,
       openProjectActions,
       isSelected,
+      isProjectRunning,
+      canStartProject,
+      getProjectProgress,
+      formatElapsedSeconds,
+      isProjectDimmed: (projectId: string) => activeMode.value === 'todo' && !canStartProject(projectId),
       formatProjectDuration,
     };
   },

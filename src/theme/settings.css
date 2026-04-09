@@ -77,6 +77,40 @@
   border-bottom: 1px solid var(--app-border);
 }
 
+.settings-link {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 2px 0 12px;
+  cursor: pointer;
+}
+
+.settings-link span {
+  color: var(--app-text-primary);
+  font-size: 15px;
+}
+
+.settings-link ion-icon {
+  color: var(--app-text-secondary);
+  font-size: 18px;
+}
+
+.settings-link-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-link-right strong {
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .settings-item:last-child {
   border-bottom: none;
   padding-bottom: 0;
