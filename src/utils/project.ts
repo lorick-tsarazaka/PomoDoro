@@ -507,6 +507,7 @@ export default defineComponent({
       canPlay,
       formattedCountdown,
       playButtonStyle,
+      projectTimerSnapshot,
       formatProjectDuration,
       formatTaskDuration,
       add,

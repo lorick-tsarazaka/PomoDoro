@@ -78,7 +78,7 @@
                 <button v-if="isTaskSelectionMode" class="task-select right" type="button" @click.stop="toggleTaskSelection(task.id)">
                   <ion-icon :icon="isTaskSelected(task.id) ? checkmarkCircle : ellipseOutline" />
                 </button>
-                <button v-if="!isTaskSelectionMode && isRunning && currentTaskId === task.id" class="mini-action" type="button" :disabled="task.status === 'done' || isTaskDimmed(task.id)" @click="markDone(task.id)">
+                <button v-if="!isTaskSelectionMode && isRunning && currentTaskId === task.id && projectTimerSnapshot.phase === 'work'" class="mini-action" type="button" :disabled="task.status === 'done' || isTaskDimmed(task.id)" @click="markDone(task.id)">
                   <ion-icon :icon="checkmarkDoneOutline" />
                 </button>
                 <button v-if="!isTaskSelectionMode" class="mini-action" type="button" @click="openTaskActions(task.id)">

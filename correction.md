@@ -1,8 +1,0 @@
-- dans page sonnerie
-    - texte dans son app :
-        - Sons fournis par l'application
-    - border color btn ajouter doit etre accent
-    - si l'on clique sur un son :
-        - btn check et stop pas de background et border
-        - btn stop doit etre icon fill stop musique
-        - si on clique sur btn check lecture son arrete

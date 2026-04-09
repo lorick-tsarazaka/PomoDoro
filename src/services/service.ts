@@ -1,4 +1,6 @@
 import { Capacitor } from '@capacitor/core';
+import { App } from '@capacitor/app';
+import { alertController } from '@ionic/vue';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import {
   CapacitorSQLite,
@@ -56,6 +58,7 @@ interface TimerState {
   activeTaskId: string | null;
   phase: PomodoroPhase;
   remainingSeconds: number;
+  intervalEndsAtMs: number | null;
   isRunning: boolean;
   waitingForConfirm: boolean;
   projectTimers: Record<string, ProjectTimerSnapshot>;
@@ -65,6 +68,7 @@ interface ProjectTimerSnapshot {
   activeTaskId: string | null;
   phase: PomodoroPhase;
   remainingSeconds: number;
+  intervalEndsAtMs: number | null;
   waitingForConfirm: boolean;
 }
 
@@ -82,7 +86,8 @@ interface LocalPayload {
 const LOCAL_STORAGE_KEY = 'pomodoro.projects.v2';
 const WORK_SECONDS = 25 * 60;
 const BREAK_SECONDS = 5 * 60;
-const NOTIFICATION_CHANNEL_ID = 'pomodoro-timer';
+const RUNNING_NOTIFICATION_CHANNEL_ID = 'pomodoro-timer-running';
+const TRANSITION_NOTIFICATION_CHANNEL_ID = 'pomodoro-timer-transition';
 const RUNNING_NOTIFICATION_ID = 61001;
 const TRANSITION_NOTIFICATION_ID = 61002;
 
@@ -96,6 +101,7 @@ const defaultTimer: TimerState = {
   activeTaskId: null,
   phase: 'work',
   remainingSeconds: WORK_SECONDS,
+  intervalEndsAtMs: null,
   isRunning: false,
   waitingForConfirm: false,
   projectTimers: {},
@@ -115,6 +121,7 @@ let timerHandle: ReturnType<typeof setInterval> | null = null;
 let bellHandle: ReturnType<typeof setInterval> | null = null;
 let nativeNotificationsConfigured = false;
 let nativeNotificationListenersBound = false;
+let appLifecycleListenersBound = false;
 let lastRunningNotificationSync = 0;
 
 function generateId(): string {
@@ -193,6 +200,7 @@ function parseTimer(raw: Partial<TimerState> | undefined): TimerState {
         activeTaskId: safe.activeTaskId ?? null,
         phase: safe.phase === 'break' ? 'break' : 'work',
         remainingSeconds: Math.max(0, sanitizeNumber(safe.remainingSeconds, WORK_SECONDS)),
+        intervalEndsAtMs: safe.intervalEndsAtMs == null ? null : Math.max(0, sanitizeNumber(safe.intervalEndsAtMs, 0)),
         waitingForConfirm: Boolean(safe.waitingForConfirm),
       };
     }
@@ -203,6 +211,7 @@ function parseTimer(raw: Partial<TimerState> | undefined): TimerState {
     activeTaskId: raw.activeTaskId ?? null,
     phase: raw.phase === 'break' ? 'break' : 'work',
     remainingSeconds: Math.max(0, sanitizeNumber(raw.remainingSeconds, WORK_SECONDS)),
+    intervalEndsAtMs: raw.intervalEndsAtMs == null ? null : Math.max(0, sanitizeNumber(raw.intervalEndsAtMs, 0)),
     isRunning: Boolean(raw.isRunning),
     waitingForConfirm: Boolean(raw.waitingForConfirm),
     projectTimers: parsedProjectTimers,
@@ -273,7 +282,7 @@ function recomputeProjectMetrics(project: Project): Project {
     durationMinutes: computedDuration.minutes,
     durationSeconds: computedDuration.seconds,
     status,
-    elapsedSeconds: Math.min(project.elapsedSeconds, totalSeconds),
+    elapsedSeconds: Math.max(0, Math.floor(project.elapsedSeconds)),
   };
 }
 
@@ -467,6 +476,7 @@ function setTimerState(next: TimerState): void {
   timerState.activeTaskId = next.activeTaskId;
   timerState.phase = next.phase;
   timerState.remainingSeconds = next.remainingSeconds;
+  timerState.intervalEndsAtMs = next.intervalEndsAtMs;
   timerState.isRunning = next.isRunning;
   timerState.waitingForConfirm = next.waitingForConfirm;
   timerState.projectTimers = { ...(next.projectTimers ?? {}) };
@@ -481,6 +491,7 @@ function saveActiveProjectSnapshot(): void {
     activeTaskId: timerState.activeTaskId,
     phase: timerState.phase,
     remainingSeconds: timerState.remainingSeconds,
+    intervalEndsAtMs: timerState.intervalEndsAtMs,
     waitingForConfirm: timerState.waitingForConfirm,
   };
 }
@@ -500,21 +511,44 @@ function resolveProjectTimerState(project: Project): ProjectTimerSnapshot {
     ? snapshotTask.id
     : (findFirstTodoTask(project)?.id ?? null);
 
-  if (snapshot?.phase === 'break') {
-    return {
-      activeTaskId,
-      phase: 'work',
-      remainingSeconds: WORK_SECONDS,
-      waitingForConfirm: false,
-    };
-  }
-
   return {
     activeTaskId,
-    phase: 'work',
+    phase: snapshot?.phase === 'break' ? 'break' : 'work',
     remainingSeconds: Math.max(0, snapshot?.remainingSeconds ?? WORK_SECONDS),
+    intervalEndsAtMs: snapshot?.intervalEndsAtMs ?? null,
     waitingForConfirm: Boolean(snapshot?.waitingForConfirm),
   };
+}
+
+function startOrRefreshIntervalEndTimestamp(): void {
+  timerState.intervalEndsAtMs = Date.now() + (Math.max(0, timerState.remainingSeconds) * 1000);
+}
+
+function computeRemainingFromTimestamp(): number {
+  if (!timerState.intervalEndsAtMs) {
+    return Math.max(0, timerState.remainingSeconds);
+  }
+
+  const msLeft = timerState.intervalEndsAtMs - Date.now();
+  return Math.max(0, Math.ceil(msLeft / 1000));
+}
+
+async function shouldResumeBreakSession(): Promise<boolean> {
+  if (typeof window === 'undefined') {
+    return true;
+  }
+
+  const alert = await alertController.create({
+    header: 'Continuer la pause en cours ?',
+    buttons: [
+      { text: 'Annuler', role: 'cancel' },
+      { text: 'Confirmer', role: 'confirm' },
+    ],
+  });
+
+  await alert.present();
+  const { role } = await alert.onDidDismiss();
+  return role === 'confirm';
 }
 
 async function persistAll(): Promise<void> {
@@ -620,9 +654,18 @@ async function configureNativeNotifications(): Promise<void> {
 
   try {
     await LocalNotifications.createChannel({
-      id: NOTIFICATION_CHANNEL_ID,
-      name: 'Pomodoro Timer',
-      description: 'Notifications du chronometre Pomodoro',
+      id: RUNNING_NOTIFICATION_CHANNEL_ID,
+      name: 'Pomodoro Timer Running',
+      description: 'Notification permanente du minuteur en cours',
+      importance: 2,
+      vibration: false,
+      visibility: 1,
+    });
+
+    await LocalNotifications.createChannel({
+      id: TRANSITION_NOTIFICATION_CHANNEL_ID,
+      name: 'Pomodoro Timer Transition',
+      description: 'Notifications de transition travail/pause',
       importance: 5,
       vibration: true,
       visibility: 1,
@@ -662,7 +705,6 @@ async function syncRunningNotification(force = false): Promise<void> {
 
   const activeTask = timerState.activeTaskId ? getTaskById(project.id, timerState.activeTaskId) : undefined;
   const taskName = activeTask?.title?.trim() || 'Tache en cours';
-  const chrono = formatCountdown(timerState.remainingSeconds);
 
   try {
     await LocalNotifications.schedule({
@@ -670,8 +712,8 @@ async function syncRunningNotification(force = false): Promise<void> {
         {
           id: RUNNING_NOTIFICATION_ID,
           title: project.title || 'Pomodoro',
-          body: `${taskName} - ${chrono}`,
-          channelId: NOTIFICATION_CHANNEL_ID,
+          body: taskName,
+          channelId: RUNNING_NOTIFICATION_CHANNEL_ID,
           ongoing: true,
           autoCancel: false,
           extra: {
@@ -685,6 +727,78 @@ async function syncRunningNotification(force = false): Promise<void> {
   } catch {
     // Notification update failure should not stop timer updates.
   }
+}
+
+async function scheduleTransitionNotificationForCurrentInterval(): Promise<void> {
+  if (!canUseNativeNotifications()) {
+    return;
+  }
+
+  if (!timerState.isRunning || !timerState.activeProjectId || timerState.waitingForConfirm || !timerState.intervalEndsAtMs) {
+    await clearTransitionNotification();
+    return;
+  }
+
+  await configureNativeNotifications();
+  if (!nativeNotificationsConfigured) {
+    return;
+  }
+
+  const project = getProjectById(timerState.activeProjectId);
+  const title = project?.title || 'Pomodoro';
+  const body = timerState.phase === 'work'
+    ? 'Fin temps de travail. Cliquer pour continuer.'
+    : 'Fin de pause. Cliquer pour continuer.';
+
+  try {
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          id: TRANSITION_NOTIFICATION_ID,
+          title,
+          body,
+          channelId: TRANSITION_NOTIFICATION_CHANNEL_ID,
+          ongoing: true,
+          autoCancel: false,
+          schedule: {
+            at: new Date(timerState.intervalEndsAtMs),
+            allowWhileIdle: true,
+          },
+          extra: {
+            type: 'transition',
+            projectId: timerState.activeProjectId,
+            taskId: timerState.activeTaskId,
+          },
+        },
+      ],
+    });
+  } catch {
+    // Keep timer running even if scheduling fails.
+  }
+}
+
+function configureAppLifecycleListeners(): void {
+  if (appLifecycleListenersBound || !isNative()) {
+    return;
+  }
+
+  appLifecycleListenersBound = true;
+
+  void App.addListener('appStateChange', ({ isActive }) => {
+    if (!timerState.activeProjectId) {
+      return;
+    }
+
+    if (isActive) {
+      tickRunningProject();
+      return;
+    }
+
+    if (timerState.isRunning) {
+      void scheduleTransitionNotificationForCurrentInterval();
+      void persistAll();
+    }
+  });
 }
 
 async function showNativeTransitionNotification(title: string, body: string): Promise<void> {
@@ -704,7 +818,7 @@ async function showNativeTransitionNotification(title: string, body: string): Pr
           id: TRANSITION_NOTIFICATION_ID,
           title,
           body,
-          channelId: NOTIFICATION_CHANNEL_ID,
+          channelId: TRANSITION_NOTIFICATION_CHANNEL_ID,
           ongoing: true,
           autoCancel: false,
           extra: {
@@ -757,6 +871,7 @@ function stopSessionInternal(resetCountdown: boolean): void {
   clearTimerLoop();
   timerState.isRunning = false;
   timerState.waitingForConfirm = false;
+  timerState.intervalEndsAtMs = null;
   void clearRunningNotification();
   void clearTransitionNotification();
   stopBell();
@@ -771,26 +886,15 @@ async function onWorkSegmentFinished(): Promise<void> {
   const project = timerState.activeProjectId ? getProjectById(timerState.activeProjectId) : undefined;
   const taskId = timerState.activeTaskId;
 
-  if (project && taskId) {
-    updateProjectInState(project.id, (current) => ({
-      ...current,
-      tasks: current.tasks.map((task) => {
-        if (task.id !== taskId || task.status === 'done') {
-          return task;
-        }
-        return {
-          ...task,
-          status: 'done',
-          updatedAt: new Date().toISOString(),
-        };
-      }),
-    }));
+  const activeTask = project && taskId ? getTaskById(project.id, taskId) : undefined;
+  if (activeTask && activeTask.status === 'todo') {
+    saveActiveProjectSnapshot();
+    return;
   }
 
-  const updatedProject = timerState.activeProjectId ? getProjectById(timerState.activeProjectId) : undefined;
-  const nextTask = updatedProject ? findFirstTodoTask(updatedProject) : undefined;
+  const nextTask = project ? findFirstTodoTask(project) : undefined;
 
-  if (!updatedProject || !nextTask) {
+  if (!project || !nextTask) {
     timerState.activeTaskId = null;
     timerState.activeProjectId = null;
     if (previousProjectId) {
@@ -809,6 +913,7 @@ async function handleIntervalFinished(): Promise<void> {
   clearTimerLoop();
   timerState.isRunning = false;
   timerState.waitingForConfirm = true;
+  timerState.intervalEndsAtMs = null;
   await clearRunningNotification();
 
   const activeProject = timerState.activeProjectId ? getProjectById(timerState.activeProjectId) : undefined;
@@ -827,7 +932,7 @@ async function handleIntervalFinished(): Promise<void> {
 
   const title = activeProject?.title ?? 'Pomodoro';
   const body = timerState.phase === 'work'
-    ? `Fin de tache ${activeTask?.title ?? ''}. Cliquer pour continuer.`
+    ? 'Fin temps de travail. Cliquer pour continuer.'
     : 'Fin de pause. Cliquer pour continuer.';
 
   playBellLoop();
@@ -840,18 +945,18 @@ function tickRunningProject(): void {
     return;
   }
 
-  timerState.remainingSeconds = Math.max(0, timerState.remainingSeconds - 1);
+  const previousRemaining = timerState.remainingSeconds;
+  const nextRemaining = computeRemainingFromTimestamp();
+  const consumed = Math.max(0, previousRemaining - nextRemaining);
+
+  timerState.remainingSeconds = nextRemaining;
   saveActiveProjectSnapshot();
 
-  if (timerState.phase === 'work') {
+  if (timerState.phase === 'work' && consumed > 0) {
     updateProjectInState(timerState.activeProjectId, (project) => ({
       ...project,
-      elapsedSeconds: project.elapsedSeconds + 1,
+      elapsedSeconds: project.elapsedSeconds + consumed,
     }));
-  }
-
-  if (timerState.remainingSeconds % 5 === 0) {
-    void syncRunningNotification();
   }
 
   if (timerState.remainingSeconds === 0) {
@@ -868,10 +973,43 @@ function ensureTimerLoop(): void {
   }
 
   void syncRunningNotification(true);
+  void scheduleTransitionNotificationForCurrentInterval();
 
   timerHandle = setInterval(() => {
     tickRunningProject();
   }, 1000);
+}
+
+function sanitizeTimerStateOnInitialize(): boolean {
+  let changed = false;
+
+  if (!timerState.activeProjectId || !timerState.activeTaskId) {
+    if (timerState.isRunning || timerState.waitingForConfirm || timerState.intervalEndsAtMs !== null) {
+      timerState.isRunning = false;
+      timerState.waitingForConfirm = false;
+      timerState.intervalEndsAtMs = null;
+      changed = true;
+    }
+
+    stopBell();
+    return changed;
+  }
+
+  if (!timerState.isRunning) {
+    return changed;
+  }
+
+  const remaining = computeRemainingFromTimestamp();
+  if (remaining <= 0) {
+    timerState.isRunning = false;
+    timerState.waitingForConfirm = false;
+    timerState.intervalEndsAtMs = null;
+    timerState.remainingSeconds = timerState.phase === 'break' ? BREAK_SECONDS : WORK_SECONDS;
+    stopBell();
+    changed = true;
+  }
+
+  return changed;
 }
 
 function getProjectSafe(projectId: string): Project | undefined {
@@ -918,6 +1056,18 @@ export async function initializeAppData(): Promise<void> {
 
   applySettingsToDocument();
   await configureNativeNotifications();
+
+  const timerStateAdjusted = sanitizeTimerStateOnInitialize();
+  await clearTransitionNotification();
+  if (!timerState.isRunning) {
+    await clearRunningNotification();
+  }
+
+  if (timerStateAdjusted) {
+    await persistAll();
+  }
+
+  configureAppLifecycleListeners();
   initialized = true;
   isReady.value = true;
   ensureTimerLoop();
@@ -1329,11 +1479,18 @@ export async function toggleProjectPlayPause(projectId: string): Promise<void> {
       return;
     }
 
-    timerState.isRunning = !timerState.isRunning;
-    if (!timerState.isRunning && timerState.phase === 'break') {
-      timerState.phase = 'work';
-      timerState.remainingSeconds = WORK_SECONDS;
+    if (timerState.isRunning) {
+      timerState.isRunning = false;
+      timerState.intervalEndsAtMs = null;
+    } else {
+      if (timerState.phase === 'break' && !(await shouldResumeBreakSession())) {
+        timerState.phase = 'work';
+        timerState.remainingSeconds = WORK_SECONDS;
+      }
+      timerState.isRunning = true;
+      startOrRefreshIntervalEndTimestamp();
     }
+
     ensureTimerLoop();
     if (!timerState.isRunning) {
       await clearRunningNotification();
@@ -1361,14 +1518,16 @@ export async function toggleProjectPlayPause(projectId: string): Promise<void> {
   timerState.activeTaskId = nextState.activeTaskId;
   timerState.phase = nextState.phase;
   timerState.remainingSeconds = nextState.remainingSeconds;
+  timerState.intervalEndsAtMs = nextState.intervalEndsAtMs;
   timerState.waitingForConfirm = false;
   timerState.isRunning = true;
+
+  startOrRefreshIntervalEndTimestamp();
   stopBell();
   await clearTransitionNotification();
   saveActiveProjectSnapshot();
 
   ensureTimerLoop();
-  await syncRunningNotification(true);
   await persistAll();
 }
 
@@ -1390,10 +1549,10 @@ export async function acknowledgeTimerTransition(): Promise<void> {
 
   timerState.waitingForConfirm = false;
   timerState.isRunning = true;
+  startOrRefreshIntervalEndTimestamp();
   saveActiveProjectSnapshot();
 
   ensureTimerLoop();
-  await syncRunningNotification(true);
   await persistAll();
 }
 
@@ -1402,13 +1561,6 @@ export function getProjectTimerSnapshot(projectId: string): {
   remainingSeconds: number;
 } {
   if (timerState.activeProjectId === projectId) {
-    if (timerState.phase === 'break' && !timerState.isRunning) {
-      return {
-        phase: 'work',
-        remainingSeconds: WORK_SECONDS,
-      };
-    }
-
     return {
       phase: timerState.phase,
       remainingSeconds: timerState.remainingSeconds,
@@ -1417,13 +1569,6 @@ export function getProjectTimerSnapshot(projectId: string): {
 
   const snapshot = timerState.projectTimers[projectId];
   if (!snapshot) {
-    return {
-      phase: 'work',
-      remainingSeconds: WORK_SECONDS,
-    };
-  }
-
-  if (snapshot.phase === 'break') {
     return {
       phase: 'work',
       remainingSeconds: WORK_SECONDS,
