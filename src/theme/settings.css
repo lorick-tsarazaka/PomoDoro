@@ -1,0 +1,136 @@
+.page-header {
+  --background: var(--app-surface);
+  --color: var(--app-text-primary);
+  --border-color: var(--app-border);
+  box-shadow: var(--app-header-shadow);
+  border-bottom: 1px solid var(--app-border);
+}
+
+.page-header ion-toolbar {
+  --background: var(--app-surface);
+  --color: var(--app-text-primary);
+  --border-color: var(--app-border);
+  --min-height: 65px;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  min-height: 65px;
+  display: flex;
+  align-items: center;
+}
+
+.page-header::after {
+  display: none;
+}
+
+.page-header ion-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.page-back-btn {
+  --color: var(--app-accent) !important;
+  --color-activated: var(--app-accent);
+  --color-focused: var(--app-accent);
+  --color-hover: var(--app-accent);
+  color: var(--app-accent);
+  width: 46px;
+  height: 46px;
+  margin: 0;
+}
+
+.page-back-btn ion-icon {
+  font-size: 26px;
+  color: var(--app-accent);
+}
+
+.page-content {
+  --background: var(--app-bg);
+}
+
+.page-shell {
+  padding: 16px 14px 24px;
+}
+
+.settings-card {
+  border-radius: 10px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-soft);
+  padding: 18px;
+  display: grid;
+  gap: 18px;
+}
+
+.settings-card h2 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--app-text-primary);
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 0 12px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.settings-link {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 2px 0 12px;
+  cursor: pointer;
+}
+
+.settings-link span {
+  color: var(--app-text-primary);
+  font-size: 15px;
+}
+
+.settings-link ion-icon {
+  color: var(--app-text-secondary);
+  font-size: 18px;
+}
+
+.settings-link-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-link-right strong {
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.settings-item label {
+  color: var(--app-text-primary);
+  font-size: 15px;
+}
+
+.settings-item select {
+  width: fit-content;
+  margin-left: auto;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: transparent;
+  color: var(--app-text-primary);
+  font-size: 14px;
+  text-align: end;
+  text-align-last: end;
+}

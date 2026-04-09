@@ -1,11 +1,13 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import HomePage from '../views/HomePage.vue'
-import SettingsPage from '../views/SettingsPage.vue';
-import TrashPage from '../views/TrashPage.vue';
-import AboutPage from '../views/AboutPage.vue';
-import ProjectPage from '../views/ProjectPage.vue';
-import HelpPage from '../views/HelpPage.vue';
+import Home from '../views/Home.vue'
+import Settings from '../views/Settings.vue';
+import Trash from '../views/Trash.vue';
+import About from '../views/About.vue';
+import Project from '../views/Project.vue';
+import Help from '../views/Help.vue';
+import TaskDetail from '../views/TaskDetail.vue';
+import Ringtone from '../views/Ringtone.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -15,32 +17,42 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/home',
     name: 'Home',
-    component: HomePage
+    component: Home
   },
   {
     path: '/settings',
     name: 'Settings',
-    component: SettingsPage
+    component: Settings
+  },
+  {
+    path: '/settings/ringtone',
+    name: 'Ringtone',
+    component: Ringtone
   },
   {
     path: '/trash',
     name: 'Trash',
-    component: TrashPage
+    component: Trash
   },
   {
     path: '/about',
     name: 'About',
-    component: AboutPage
+    component: About
   },
   {
     path: '/help',
     name: 'Help',
-    component: HelpPage
+    component: Help
   },
   {
     path: '/project/:id',
     name: 'Project',
-    component: ProjectPage
+    component: Project
+  },
+  {
+    path: '/project/:projectId/task/:taskId',
+    name: 'TaskDetail',
+    component: TaskDetail
   }
 ]
 

@@ -1,0 +1,231 @@
+.page-header {
+  --background: var(--app-surface);
+  --color: var(--app-text-primary);
+  --border-color: var(--app-border);
+  box-shadow: var(--app-header-shadow);
+  border-bottom: 1px solid var(--app-border);
+}
+
+.page-header ion-toolbar {
+  --background: var(--app-surface);
+  --color: var(--app-text-primary);
+  --border-color: var(--app-border);
+  --min-height: 65px;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  min-height: 65px;
+  display: flex;
+  align-items: center;
+}
+
+.page-header::after {
+  display: none;
+}
+
+.page-header ion-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.page-back-btn {
+  --color: var(--app-accent) !important;
+  --color-activated: var(--app-accent);
+  --color-focused: var(--app-accent);
+  --color-hover: var(--app-accent);
+  color: var(--app-accent);
+  width: 46px;
+  height: 46px;
+  margin: 0;
+}
+
+.page-back-btn ion-icon {
+  font-size: 26px;
+  color: var(--app-accent);
+}
+
+.page-content {
+  --background: var(--app-bg);
+}
+
+.page-shell {
+  padding: 16px 14px 24px;
+  display: grid;
+  gap: 12px;
+}
+
+.hero-card,
+.info-card {
+  border-radius: 10px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-soft);
+  padding: 18px;
+}
+
+.hero-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.app-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 10px 24px rgba(58, 133, 255, 0);
+}
+
+.hero-card h2 {
+  margin: 0 0 6px;
+  color: var(--app-text-primary);
+  font-size: 22px;
+}
+
+.hero-card p {
+  margin: 0;
+  color: var(--app-text-secondary);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.info-card h3 {
+  margin: 0 0 12px;
+  color: var(--app-text-primary);
+  font-size: 18px;
+}
+
+.info-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0px 0;
+  min-height: 40px;
+  align-items: center;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.info-row .about-label {
+  color: var(--app-text-secondary);
+  font-size: 14px;
+}
+
+.info-row .about-value {
+  color: var(--app-text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.creator-card-content {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  padding: 10px 8px 8px;
+}
+
+.creator-card h3 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.creator-name {
+  margin: 0;
+  color: var(--app-text-primary);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.creator-subtitle {
+  margin: -2px 0 2px;
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.4;
+}
+
+.creator-social-row {
+  margin-top:10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.creator-social-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease;
+}
+
+.creator-social-btn ion-icon {
+  font-size: 35px;
+}
+
+.creator-social-btn:hover {
+  transform: translateY(-1px);
+}
+
+.creator-social-btn.github {
+  color: #0f172a;
+  background: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+.creator-social-btn.linkedin {
+  color: #0a66c2;
+  background: #e8f3ff;
+  border-color: #bfdcff;
+}
+
+.creator-social-btn.mail {
+  color: #ea4335;
+  background: #feefee;
+  border-color: #f8c8c3a0;
+}
+
+.about-footer {
+  padding: 8px 4px 2px;
+  text-align: center;
+}
+
+.about-footer p {
+  margin: 0;
+  color: var(--app-text-secondary);
+  font-size: 12px;
+}
+
+.feature-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--app-text-primary);
+  display: grid;
+  gap: 8px;
+}
+
+.feature-list li {
+  line-height: 1.5;
+}
