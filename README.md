@@ -7,23 +7,6 @@ PomoDoro is a productivity-focused web and Android project manager built with Io
 
 <br clear="left">
 
-## Overview
-
-PomoDoro is a project and task manager for Web and Android, designed around a fast and practical workflow.
-
-## Core Features
-
-- Project lifecycle: create, edit, complete, restore, and delete.
-- Status workflow: Todo, Done, and Trash.
-- Task duration management in hours, minutes, and seconds.
-- Multi-select with long press for bulk actions.
-- Quick actions from Home and Trash screens.
-- Integrated pages: Settings, Help, and About.
-- Multilingual UI: French (`fr`), English (`en`), Malagasy (`mg`).
-- Cross-platform persistence:
-  - Web: `localStorage` (`pomodoro.projects.v1`).
-  - Android: SQLite database (`pomodoro_db`, tables `projects` and `settings`).
-
 ## Tech Stack
 
 - Vue 3 + TypeScript
@@ -31,21 +14,12 @@ PomoDoro is a project and task manager for Web and Android, designed around a fa
 - Capacitor (Android)
 - SQLite (`@capacitor-community/sqlite`)
 - Vite
-- Tests: Vitest (unit) and Cypress (E2E)
-
-## Project Essentials
-
-- App state and persistence: [src/services/service.ts](src/services/service.ts)
-- Translations: [src/utils/i18n.ts](src/utils/i18n.ts)
-- Screens: [src/views](src/views)
-- Routing: [src/router/index.ts](src/router/index.ts)
-- Theme variables: [src/theme/variables.css](src/theme/variables.css)
 
 ## Prerequisites
 
 - Node.js 18+
 - npm 9+
-- For Android builds: Android Studio, Android SDK, and a compatible JDK
+- For Android builds: Android SDK, and a compatible JDK
 
 ## Quick Start
 
